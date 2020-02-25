@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tvScoreboardDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Scoreboard"
+        android:textColor="@color/colorDarkGray"
+        android:textSize="30dp"
+        android:layout_marginTop="10dp"/>
+
+    <View
+        android:id="@+id/vLine"
+        android:layout_width="300dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvScoreboardDisp"
+        android:background="@color/colorOrangeDark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Total Points"
+        android:textColor="@color/colorLightGray"
+        android:textSize="20dp"
+        android:layout_below="@id/vLine"
+        android:layout_marginTop="2dp"/>
+
+    <ImageView
+        android:id="@+id/ivFirst"
+        android:layout_width="70dp"
+        android:layout_height="120dp"
+        android:background="@drawable/podium_first"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"/>
+
+    <ImageView
+        android:id="@+id/ivSecond"
+        android:layout_width="70dp"
+        android:layout_height="90dp"
+        android:background="@drawable/podium_second"
+        android:layout_marginTop="160dp"
+        android:layout_alignLeft="@+id/ivFirst"
+        android:layout_marginLeft="-80dp"/>
+
+    <ImageView
+        android:id="@+id/ivThird"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:background="@drawable/podium_third"
+        android:layout_marginTop="190dp"
+        android:layout_alignLeft="@+id/ivFirst"
+        android:layout_marginLeft="80dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivImageFirst"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/default_user"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@android:color/black"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivImageSecond"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/default_user"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@android:color/black"
+        android:layout_marginTop="135dp"
+        android:layout_alignLeft="@+id/ivImageFirst"
+        android:layout_marginLeft="-80dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivImageThird"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/default_user"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@android:color/black"
+        android:layout_marginTop="160dp"
+        android:layout_alignLeft="@+id/ivImageFirst"
+        android:layout_marginLeft="80dp"/>
+
+    <ListView
+        android:id="@+id/lvList"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivFirst"
+        android:layout_marginTop="20dp"
+        android:divider="@android:color/white"
+        android:dividerHeight="5dp"/>
+
+
+</RelativeLayout>

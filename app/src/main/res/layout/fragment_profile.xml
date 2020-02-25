@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivProfileImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/default_user"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/colorOrangeDark"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/ivUserInfo"
+        android:layout_width="300dp"
+        android:layout_height="190dp"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/button_default" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:text="Edit"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivUserInfo"
+        android:layout_marginTop="-25dp"/>
+
+    <ImageView
+        android:id="@+id/ivUserStats"
+        android:layout_width="300dp"
+        android:layout_height="180dp"
+        android:layout_below="@+id/ivUserInfo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/button_default" />
+
+    <TextView
+        android:id="@+id/tvNameDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="15dp"
+        android:textColor="@color/colorDarkGray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivUserInfo"
+        android:layout_marginTop="-180dp"
+        />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="David Reynolds"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvNameDisp"
+        android:layout_marginTop="-5dp"
+        />
+
+    <TextView
+        android:id="@+id/tvUserDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textSize="15dp"
+        android:textColor="@color/colorDarkGray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvName"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tvUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deejee"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvUserDisp"
+        android:layout_marginTop="-5dp"
+        />
+
+    <TextView
+        android:id="@+id/tvEmailDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="15dp"
+        android:textColor="@color/colorDarkGray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvUser"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="deejee@gmail.com"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvEmailDisp"
+        android:layout_marginTop="-5dp"
+        />
+
+    <TextView
+        android:id="@+id/tvPointsDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Points"
+        android:textSize="15dp"
+        android:textColor="@color/colorDarkGray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivUserStats"
+        android:layout_marginTop="-165dp"
+        />
+
+    <TextView
+        android:id="@+id/tvPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="940"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvPointsDisp"
+        android:layout_marginTop="-5dp"
+        />
+
+    <TextView
+        android:id="@+id/tvTotalDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Time Set"
+        android:textSize="15dp"
+        android:textColor="@color/colorDarkGray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvPoints"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15 hrs 40 mins"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvTotalDisp"
+        android:layout_marginTop="-5dp"
+        />
+
+    <TextView
+        android:id="@+id/tvAverageDisp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Time Set"
+        android:textSize="15dp"
+        android:textColor="@color/colorDarkGray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvTotal"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tvAverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="35 mins"
+        android:textSize="20dp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvAverageDisp"
+        android:layout_marginTop="-5dp"
+        />
+
+</RelativeLayout>

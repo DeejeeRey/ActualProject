@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "980310266460",
+    "firebase_url": "https://wrkapp-94b25.firebaseio.com",
+    "project_id": "wrkapp-94b25",
+    "storage_bucket": "wrkapp-94b25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980310266460:android:d5911bbb9d12299065cc99",
+        "android_client_info": {
+          "package_name": "com.dgr790.wrkapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980310266460-5dki62ap983i84v12p9gvdhjdd1m1ag9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dgr790.wrkapp",
+            "certificate_hash": "e68f1c587928a308da19d0382e8099ad36cfa243"
+          }
+        },
+        {
+          "client_id": "980310266460-dcorgdis72es8tqcl15hksgpdm6cfquo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANiPMv5kLbz2dQK4ZHLLnlwBmGe-V0NC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980310266460-dcorgdis72es8tqcl15hksgpdm6cfquo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
