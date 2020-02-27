@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,11 +41,17 @@ public class HomeFragment extends Fragment {
     private CountDownTimer timer;
     private int mins;
     private int score;
+
     private String userID;
+    private FirebaseUser currentUser;
+    private FirebaseAuth mAuth;
+
     private int dbScore;
     private int dbTimes = 0;
     private boolean finished;
-    FirebaseAuth mAuth;
+    private HashMap<String, String> userHashMap;
+    private DatabaseReference currentDB;
+
 
     @Nullable
     @Override
@@ -56,9 +63,12 @@ public class HomeFragment extends Fragment {
         btnStop = (Button) v.findViewById(R.id.btnStop);
         etTime = (EditText) v.findViewById(R.id.etTime);
         tvTimer = (TextView) v.findViewById(R.id.tvTimer);
-        btnSignOut = (Button) v.findViewById(R.id.btnSignOut);
         rotatePB();
         btnStop.setVisibility(v.GONE);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        userID = currentUser.getUid();
 
 
         btnStart.setOnClickListener(new View.OnClickListener() {
@@ -76,23 +86,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut(v);
-            }
-        });
+
 
 
         return v;
     }
 
-    private void signOut(View v) {
-        FirebaseAuth.getInstance().signOut();
-        Intent loginActivity = new Intent(v.getContext(), LoginActivity.class);
-        startActivity(loginActivity);
-
-    }
 
     private void rotatePB() {
         Animation ani = new RotateAnimation(0.0f, 90.0f, 250.0f, 273f);
@@ -147,30 +146,64 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateDB() {
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
 
-        // Get current users score
-        getCurrentScore(currentDB);
-        getCurrentTimes(currentDB);
+        currentDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        score = score + dbScore;
-        Map newScore = new HashMap();
-        newScore.put("score", score);
-        currentDB.updateChildren(newScore);
 
-        dbTimes ++;
-        Map newTimes = new HashMap();
-        newTimes.put("times", dbTimes);
-        currentDB.updateChildren(newTimes);
+        currentDB.child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userHashMap = (HashMap<String, String>) dataSnapshot.getValue();
+
+                dbScore = Integer.valueOf(userHashMap.get("Score"));
+                dbTimes = Integer.valueOf(userHashMap.get("Times"));
+
+                score = score + dbScore;
+                Map newScore = new HashMap();
+                newScore.put("Score", score);
+                currentDB.updateChildren(newScore);
+
+                dbTimes ++;
+                Map newTimes = new HashMap();
+                newTimes.put("Times", dbTimes);
+                currentDB.updateChildren(newTimes);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+//
+//        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
+//
+//        // Get current users score
+//        getCurrentScore(currentDB);
+//        getCurrentTimes(currentDB);
+//
+//        System.out.println(dbScore);
+//        System.out.println(dbTimes);
+//
+//        score = score + dbScore;
+//        Map newScore = new HashMap();
+//        newScore.put("Score", score);
+//        currentDB.updateChildren(newScore);
+//
+//        dbTimes ++;
+//        Map newTimes = new HashMap();
+//        newTimes.put("Times", dbTimes);
+//        currentDB.updateChildren(newTimes);
     }
 
 
     private void getCurrentScore(DatabaseReference currentDB) {
-        currentDB.child("score").addValueEventListener(new ValueEventListener() {
+        currentDB.child("Score").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               dbScore = ((Long) dataSnapshot.getValue()).intValue();
+               dbScore = dataSnapshot.getValue(int.class);
             }
 
             @Override
@@ -180,10 +213,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void getCurrentTimes(DatabaseReference currentDB) {
-        currentDB.child("times").addValueEventListener(new ValueEventListener() {
+        currentDB.child("Times").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dbTimes = ((Long) dataSnapshot.getValue()).intValue();
+                dbTimes = dataSnapshot.getValue(int.class);
             }
 
             @Override

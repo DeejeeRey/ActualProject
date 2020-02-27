@@ -122,6 +122,10 @@ public class RegisterActivity extends AppCompatActivity {
         userInformation[4] = score;
         userInformation[5] = times;
         userInformation[6] = "true";
+
+
+
+
     }
 
     private void createUserAccount(String email, String pass) {
@@ -167,8 +171,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // User information updated successfully
                                     showMessage("Register complete");
-//                                    addInfo();
-//                                    setPhoto();
                                     updateUI();
                                 }
                             }

@@ -1,5 +1,6 @@
 package com.dgr790.wrkapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
@@ -25,13 +26,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
     private CircleImageView ivProfileImage;
-    private Button btnEdit;
+    private Button btnEdit, btnSignOut;
     private TextView tvName, tvUser, tvEmail, tvPoints, tvTotal, tvAverage;
     private TextView tvPointsDisp, tvTotalDisp, tvAverageDisp;
     private ImageView ivUserInfo, ivUserStats;
@@ -43,6 +45,8 @@ public class ProfileFragment extends Fragment {
     private String userID;
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+
+    private HashMap<String, String> userHashMap;
 
 
     @Nullable
@@ -63,14 +67,18 @@ public class ProfileFragment extends Fragment {
         tvAverageDisp = (TextView) v.findViewById(R.id.tvAverageDisp);
         ivUserInfo = (ImageView) v.findViewById(R.id.ivUserInfo);
         ivUserStats = (ImageView) v.findViewById(R.id.ivUserStats);
+        btnSignOut = (Button) v.findViewById(R.id.btnSignOut);
 
         String[] dataNames = {"First Name", "Second Name", "Username", "Email", "Score", "Times"};
+
+
 
 
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         userID = currentUser.getUid();
+
 
         setProfileImage();
         setProfileInfo(dataNames);
@@ -82,36 +90,30 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut(v);
+            }
+        });
 
 
         return v;
     }
 
     private void setProfileInfo(String[] dataNames) {
-        DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-        String[] dataValues = new String[6];
+        DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        for (int i=0; i<4; i++) {
-            dataValues[i] = getStringData(dataNames[i], currentDB);
-        }
 
-        for (int i=4; i<6; i++) {
-            dataValues[i] = getIntData(dataNames[i], currentDB);
-        }
-
-        tvName.setText(dataValues[0] + dataValues[1]);
-        tvUser.setText(dataValues[2]);
-        tvEmail.setText(dataValues[3]);
-        tvPoints.setText(dataValues[4]);
-
-    }
-
-    private String getStringData(String type, DatabaseReference currentDB) {
-
-        currentDB.child(type).addValueEventListener(new ValueEventListener() {
+        currentDB.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                returnValueString = (String) dataSnapshot.getValue();
+                userHashMap = (HashMap<String, String>) dataSnapshot.getValue();
+
+                tvName.setText(userHashMap.get("First Name") + " " + userHashMap.get("Second Name"));
+                tvUser.setText(userHashMap.get("Username"));
+                tvEmail.setText(userHashMap.get("Email"));
+                tvPoints.setText(String.valueOf(userHashMap.get("Score")));
             }
 
             @Override
@@ -120,25 +122,9 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        return returnValueString;
     }
 
-    private String getIntData(String type, DatabaseReference currentDB) {
 
-        currentDB.child(type).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                returnValueInt = ((Long) dataSnapshot.getValue()).intValue();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return Integer.toString(returnValueInt);
-    }
 
     private void changeLayout() {
         // GET RID OF STATS BOX & REPLACE WITH WHAT IS ON SLIDES
@@ -155,5 +141,12 @@ public class ProfileFragment extends Fragment {
 
     private void setProfileImage() {
         Glide.with(this).load(currentUser.getPhotoUrl()).into(ivProfileImage);
+    }
+
+    private void signOut(View v) {
+        FirebaseAuth.getInstance().signOut();
+        Intent loginActivity = new Intent(v.getContext(), LoginActivity.class);
+        startActivity(loginActivity);
+
     }
 }
