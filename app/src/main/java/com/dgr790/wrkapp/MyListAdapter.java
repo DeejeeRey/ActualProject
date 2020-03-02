@@ -13,15 +13,15 @@ import java.util.ArrayList;
 public class MyListAdapter extends ArrayAdapter<String> {
 
     private final Activity context;
-    private final ArrayList<String> usernames;
+    private final ArrayList<String> fullnames;
     private final ArrayList<String> points;
     private final ArrayList<Integer> positions;
 
-    public MyListAdapter(Activity context, ArrayList<String> usernames, ArrayList<String> points, ArrayList<Integer> positions) {
-        super(context, R.layout.listview_item, usernames);
+    public MyListAdapter(Activity context, ArrayList<String> fullnames, ArrayList<String> points, ArrayList<Integer> positions) {
+        super(context, R.layout.listview_item, fullnames);
 
         this.context = context;
-        this.usernames = usernames;
+        this.fullnames = fullnames;
         this.points = points;
         this.positions = positions;
     }
@@ -36,7 +36,7 @@ public class MyListAdapter extends ArrayAdapter<String> {
         TextView lvScore = (TextView) rowView.findViewById(R.id.lvScore);
 
         lvPosition.setText(positions.get(position) + "");
-        lvName.setText(usernames.get(position));
+        lvName.setText(fullnames.get(position));
         lvScore.setText(points.get(position));
 
         return rowView;

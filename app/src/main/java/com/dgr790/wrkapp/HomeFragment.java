@@ -52,6 +52,8 @@ public class HomeFragment extends Fragment {
     private HashMap<String, String> userHashMap;
     private DatabaseReference currentDB;
 
+    private boolean dataAdded;
+
 
     @Nullable
     @Override
@@ -146,6 +148,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateDB() {
+        dataAdded = false;
 
         currentDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -153,20 +156,23 @@ public class HomeFragment extends Fragment {
         currentDB.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userHashMap = (HashMap<String, String>) dataSnapshot.getValue();
+                if (!dataAdded) {
+                    userHashMap = (HashMap<String, String>) dataSnapshot.getValue();
 
-                dbScore = Integer.valueOf(userHashMap.get("Score"));
-                dbTimes = Integer.valueOf(userHashMap.get("Times"));
+                    dbScore = Integer.valueOf(String.valueOf(userHashMap.get("Score")));
+                    dbTimes = Integer.valueOf(String.valueOf(userHashMap.get("Times")));
 
-                score = score + dbScore;
-                Map newScore = new HashMap();
-                newScore.put("Score", score);
-                currentDB.updateChildren(newScore);
+                    score = score + dbScore;
+                    Map newScore = new HashMap();
+                    newScore.put("Score", score);
+                    currentDB.child(userID).updateChildren(newScore);
 
-                dbTimes ++;
-                Map newTimes = new HashMap();
-                newTimes.put("Times", dbTimes);
-                currentDB.updateChildren(newTimes);
+                    dbTimes++;
+                    Map newTimes = new HashMap();
+                    newTimes.put("Times", dbTimes);
+                    currentDB.child(userID).updateChildren(newTimes);
+                    dataAdded = true;
+                }
             }
 
             @Override

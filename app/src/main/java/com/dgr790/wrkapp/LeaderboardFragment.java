@@ -10,15 +10,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LeaderboardFragment extends Fragment {
 
     private ListView lvList;
 
-    private ArrayList<String> usernames;
+    private ArrayList<String> fullnames;
     private ArrayList<String> points;
     private ArrayList<Integer> positions;
+
+    private ArrayList<HashMap<String, String>> userList;
+
+    private FirebaseAuth mAuth;
 
     @Nullable
     @Override
@@ -27,28 +40,57 @@ public class LeaderboardFragment extends Fragment {
 
         lvList = (ListView) v.findViewById(R.id.lvList);
 
+        mAuth = FirebaseAuth.getInstance();
+
         setupListView();
+
+
 
 
         return v;
     }
 
     private void setupListView() {
-        usernames = new ArrayList<>();
-        points = new ArrayList<>();
-        positions = new ArrayList<>();
-        usernames.add("David Reynolds");
-        usernames.add("Becky Hart");
-        usernames.add("Beth Science");
-        points.add("700 Points");
-        points.add("600 Points");
-        points.add("500 Points");
-        positions.add(1);
-        positions.add(2);
-        positions.add(3);
+        DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        MyListAdapter adapter = new MyListAdapter(getActivity(), usernames, points, positions);
-        lvList.setAdapter(adapter);
+        currentDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                userList =  new ArrayList<>();
+
+                for (DataSnapshot user: dataSnapshot.getChildren()) {
+                    HashMap<String, String> userTemp = (HashMap<String, String>) user.getValue();
+                    userList.add(userTemp);
+                }
+
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                System.out.println(userList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+//        usernames = new ArrayList<>();
+//        points = new ArrayList<>();
+//        positions = new ArrayList<>();
+//        usernames.add("David Reynolds");
+//        usernames.add("Becky Hart");
+//        usernames.add("Beth Science");
+//        points.add("700 Points");
+//        points.add("600 Points");
+//        points.add("500 Points");
+//        positions.add(1);
+//        positions.add(2);
+//        positions.add(3);
+
+//        MyListAdapter adapter = new MyListAdapter(getActivity(), fullnames, points, positions);
+//        lvList.setAdapter(adapter);
 
     }
 
