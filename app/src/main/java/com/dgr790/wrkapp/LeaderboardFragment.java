@@ -19,15 +19,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class LeaderboardFragment extends Fragment {
 
     private ListView lvList;
 
-    private ArrayList<String> fullnames;
-    private ArrayList<String> points;
-    private ArrayList<Integer> positions;
+    private ArrayList<String> fullnames = new ArrayList<String>();
+    private ArrayList<String> firstnames = new ArrayList<String>();
+    private ArrayList<String> secondnames = new ArrayList<String>();
+    private ArrayList<String> points = new ArrayList<String>();
+    private ArrayList<Integer> positions = new ArrayList<Integer>();
+
+    private int i = 0;
 
     private ArrayList<HashMap<String, String>> userList;
 
@@ -64,8 +70,22 @@ public class LeaderboardFragment extends Fragment {
                     userList.add(userTemp);
                 }
 
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                System.out.println(userList);
+                Comparator<HashMap<String, String>> scoreComparator = new Comparator<HashMap<String,String>>() {
+
+                    @Override
+                    public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+                        // Get the distance and compare the distance.
+                        Integer distance1 = Integer.parseInt(String.valueOf(o1.get("Score")));
+                        Integer distance2 = Integer.parseInt(String.valueOf(o2.get("Score")));
+
+                        return distance1.compareTo(distance2);
+                    }
+                };
+
+                Collections.sort(userList, scoreComparator);
+                Collections.reverse(userList);
+
+                setViews();
 
             }
 
@@ -91,6 +111,38 @@ public class LeaderboardFragment extends Fragment {
 
 //        MyListAdapter adapter = new MyListAdapter(getActivity(), fullnames, points, positions);
 //        lvList.setAdapter(adapter);
+
+    }
+
+    private void setViews() {
+
+        for (HashMap<String,String> entry : userList) {
+            i++;
+            for(String key : entry.keySet()) {
+                String value = String.valueOf(entry.get(key));
+                if (key.equals("First Name")) {
+                    firstnames.add(value);
+                    positions.add(i);
+                } else if (key.equals("Second Name")) {
+                    secondnames.add(value);
+                } else if (key.equals("Score")) {
+                    points.add(value);
+                } else {
+
+                }
+            }
+        }
+
+        int c = 0;
+
+        for (String name : firstnames) {
+            fullnames.add(name + " " + secondnames.get(c));
+            c++;
+        }
+
+        MyListAdapter adapter = new MyListAdapter(getActivity(), fullnames, points, positions);
+        lvList.setAdapter(adapter);
+
 
     }
 
