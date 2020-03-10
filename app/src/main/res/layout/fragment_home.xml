@@ -8,14 +8,15 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:indeterminate="false"
         android:max="60"
         android:progress="60"
         android:progressDrawable="@drawable/progress_circle"
         android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        />
 
     <Button
         android:id="@+id/btnStart"
@@ -42,7 +43,9 @@
         android:ems="10"
         android:layout_centerHorizontal="true"
         android:inputType="number"
-        android:layout_below="@id/progressBar"/>
+        android:layout_below="@id/tvTimer"
+        android:hint="Enter a Time"
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/tvTimer"
@@ -51,8 +54,8 @@
         android:text="00:00"
         android:textSize="32sp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="230dp"/>
+        android:layout_below="@id/progressBar"
+        />
 
 
 </RelativeLayout>

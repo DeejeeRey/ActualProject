@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
 
     private int dbScore;
     private int dbTimes = 0;
-    private boolean finished;
+    private boolean timerOn;
     private HashMap<String, String> userHashMap;
     private DatabaseReference currentDB;
 
@@ -71,6 +71,8 @@ public class HomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         userID = currentUser.getUid();
+
+        timerOn = false;
 
 
         btnStart.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +105,7 @@ public class HomeFragment extends Fragment {
 
     private void startTimer() {
 
-        finished = false;
+        timerOn = true;
 
         btnStart.setVisibility(getView().GONE);
         btnStop.setVisibility(getView().VISIBLE);
@@ -123,8 +125,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFinish() {
                if(tvTimer.getText().equals("00:00")) {
+                   timerOn = false;
                    score = mins;
-                   finished = true;
                    updateDB();
 
 
@@ -139,7 +141,10 @@ public class HomeFragment extends Fragment {
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                timerOn = false;
                 timer.cancel();
+                pb.setProgress(60*mins);
+                tvTimer.setText("00:00");
                 btnStop.setVisibility(getView().GONE);
                 btnStart.setVisibility(getView().VISIBLE);
             }
@@ -180,56 +185,29 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-
-//
-//        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
-//
-//        // Get current users score
-//        getCurrentScore(currentDB);
-//        getCurrentTimes(currentDB);
-//
-//        System.out.println(dbScore);
-//        System.out.println(dbTimes);
-//
-//        score = score + dbScore;
-//        Map newScore = new HashMap();
-//        newScore.put("Score", score);
-//        currentDB.updateChildren(newScore);
-//
-//        dbTimes ++;
-//        Map newTimes = new HashMap();
-//        newTimes.put("Times", dbTimes);
-//        currentDB.updateChildren(newTimes);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
 
-    private void getCurrentScore(DatabaseReference currentDB) {
-        currentDB.child("Score").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               dbScore = dataSnapshot.getValue(int.class);
-            }
+        if (timerOn) {
+            timerOn = false;
+            timer.cancel();
+            pb.setProgress(60*mins);
+            tvTimer.setText("00:00");
+            btnStop.setVisibility(getView().GONE);
+            btnStart.setVisibility(getView().VISIBLE);
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
     }
 
-    private void getCurrentTimes(DatabaseReference currentDB) {
-        currentDB.child("Times").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dbTimes = dataSnapshot.getValue(int.class);
-            }
+    @Override
+    public void onResume() {
+        super.onResume();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
     }
+
 
     private void showMessage(String m) {
         Toast.makeText(this.getContext(), m, Toast.LENGTH_SHORT).show();
