@@ -98,7 +98,7 @@
     <ListView
         android:id="@+id/lvList"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="340dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/ivFirst"
         android:layout_marginTop="20dp"

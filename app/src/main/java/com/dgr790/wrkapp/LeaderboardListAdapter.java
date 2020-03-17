@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MyListAdapter extends ArrayAdapter<String> {
+public class LeaderboardListAdapter extends ArrayAdapter<String> {
 
     private final Activity context;
     private final ArrayList<String> fullnames;
     private final ArrayList<String> points;
     private final ArrayList<Integer> positions;
 
-    public MyListAdapter(Activity context, ArrayList<String> fullnames, ArrayList<String> points, ArrayList<Integer> positions) {
-        super(context, R.layout.listview_item, fullnames);
+    public LeaderboardListAdapter(Activity context, ArrayList<String> fullnames, ArrayList<String> points, ArrayList<Integer> positions) {
+        super(context, R.layout.leaderboard_item, fullnames);
 
         this.context = context;
         this.fullnames = fullnames;
@@ -29,7 +29,7 @@ public class MyListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.listview_item, null, true);
+        View rowView = inflater.inflate(R.layout.leaderboard_item, null, true);
 
         TextView lvPosition = (TextView) rowView.findViewById(R.id.lvPosition);
         TextView lvName = (TextView) rowView.findViewById(R.id.lvName);

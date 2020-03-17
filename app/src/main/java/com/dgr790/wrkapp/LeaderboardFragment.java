@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -94,24 +93,6 @@ public class LeaderboardFragment extends Fragment {
 
             }
         });
-
-
-//        usernames = new ArrayList<>();
-//        points = new ArrayList<>();
-//        positions = new ArrayList<>();
-//        usernames.add("David Reynolds");
-//        usernames.add("Becky Hart");
-//        usernames.add("Beth Science");
-//        points.add("700 Points");
-//        points.add("600 Points");
-//        points.add("500 Points");
-//        positions.add(1);
-//        positions.add(2);
-//        positions.add(3);
-
-//        MyListAdapter adapter = new MyListAdapter(getActivity(), fullnames, points, positions);
-//        lvList.setAdapter(adapter);
-
     }
 
     private void setViews() {
@@ -140,7 +121,7 @@ public class LeaderboardFragment extends Fragment {
             c++;
         }
 
-        MyListAdapter adapter = new MyListAdapter(getActivity(), fullnames, points, positions);
+        LeaderboardListAdapter adapter = new LeaderboardListAdapter(getActivity(), fullnames, points, positions);
         lvList.setAdapter(adapter);
 
 
