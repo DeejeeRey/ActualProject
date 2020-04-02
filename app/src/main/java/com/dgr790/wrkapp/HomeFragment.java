@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,10 +36,11 @@ import java.util.Map;
 public class HomeFragment extends Fragment {
 
     private ProgressBar pb;
-    private Button btnStart, btnStop, btnSignOut;
+    private Button btnStart, btnStop, btnShowInfo, btnHideInfo;
     private EditText etTime;
-    private TextView tvTimer;
+    private TextView tvTimer, tvMessage;
     private CountDownTimer timer;
+    private ImageView ivBackground;
     private int mins;
     private int score;
 
@@ -65,8 +67,17 @@ public class HomeFragment extends Fragment {
         btnStop = (Button) v.findViewById(R.id.btnStop);
         etTime = (EditText) v.findViewById(R.id.etTime);
         tvTimer = (TextView) v.findViewById(R.id.tvTimer);
+        btnShowInfo = (Button) v.findViewById(R.id.btnShowInfo);
+        btnHideInfo = (Button) v.findViewById(R.id.btnHideInfo);
+        tvMessage = (TextView) v.findViewById(R.id.tvMessage);
+        ivBackground = (ImageView) v.findViewById(R.id.ivBackground);
+
         rotatePB();
-        btnStop.setVisibility(v.GONE);
+
+        btnStop.setVisibility(v.INVISIBLE);
+        btnHideInfo.setVisibility(v.INVISIBLE);
+        ivBackground.setVisibility(v.INVISIBLE);
+        tvMessage.setVisibility(getView().INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -90,15 +101,45 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        btnShowInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfo();
+            }
+        });
 
 
         return v;
     }
 
+    private void showInfo() {
+        btnShowInfo.setVisibility(getView().INVISIBLE);
+        btnHideInfo.setVisibility(getView().VISIBLE);
+        ivBackground.setVisibility(getView().VISIBLE);
+        tvMessage.setVisibility(getView().VISIBLE);
+
+        tvMessage.setText("Welcome to WRK - the app to help you study!\n\n" +
+                "It's simple, set the amount of time you would like to study and get to work!\n\n" +
+                "Be careful not to leave the app, or your hard work won't be rewarded.\n\n" +
+                "Compete against your friends to get the highest score!\n\n" +
+                "Happy Studying! Now get to 'WRK'...");
+
+        btnHideInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnShowInfo.setVisibility(getView().VISIBLE);
+                btnHideInfo.setVisibility(getView().INVISIBLE);
+                ivBackground.setVisibility(getView().INVISIBLE);
+                tvMessage.setVisibility(getView().INVISIBLE);
+            }
+        });
+
+
+    }
+
 
     private void rotatePB() {
-        Animation ani = new RotateAnimation(0.0f, 90.0f, 250.0f, 273f);
+        Animation ani = new RotateAnimation(0.0f, 90.0f, 500f, 550f);
         ani.setFillAfter(true);
         pb.startAnimation(ani);
     }

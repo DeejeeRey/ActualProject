@@ -34,7 +34,7 @@
         android:background="@drawable/custom_button"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/ivUserInfo"
-        android:layout_marginTop="-25dp"/>
+        android:layout_marginTop="-35dp"/>
 
     <ImageView
         android:id="@+id/ivUserStats"
@@ -42,7 +42,7 @@
         android:layout_height="180dp"
         android:layout_below="@+id/ivUserInfo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         app:srcCompat="@drawable/button_default" />
 
     <TextView
@@ -61,7 +61,7 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="David Reynolds"
+        android:text="Loading..."
         android:textSize="20dp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
@@ -85,7 +85,7 @@
         android:id="@+id/tvUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deejee"
+        android:text="Loading..."
         android:textSize="20dp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
@@ -109,7 +109,7 @@
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="deejee@gmail.com"
+        android:text="Loading..."
         android:textSize="20dp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
@@ -133,7 +133,7 @@
         android:id="@+id/tvPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="940"
+        android:text="Loading..."
         android:textSize="20dp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
@@ -157,7 +157,7 @@
         android:id="@+id/tvTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="15 hrs 40 mins"
+        android:text="Loading..."
         android:textSize="20dp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
@@ -181,7 +181,7 @@
         android:id="@+id/tvAverage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="35 mins"
+        android:text="Loading..."
         android:textSize="20dp"
         android:textColor="@android:color/black"
         android:layout_centerHorizontal="true"
@@ -198,6 +198,82 @@
         android:layout_marginTop="15dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"/>
+
+    <EditText
+        android:id="@+id/changeUsernameET"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivUserStats"
+        android:layout_marginTop="-180dp"
+        android:layout_marginLeft="80dp"
+        android:hint="Change username"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/changeEmailET"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/changeUsernameET"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="80dp"
+        android:hint="Change email"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/changePassET"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/changeEmailET"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="80dp"
+        android:hint="Change password"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/btnChangeUsername"
+        android:text="Update"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_button"
+        android:layout_toRightOf="@id/changeUsernameET"
+        android:layout_below="@id/ivUserStats"
+        android:layout_marginTop="-160dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/btnChangeEmail"
+        android:text="Update"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_button"
+        android:layout_toRightOf="@id/changeUsernameET"
+        android:layout_below="@id/ivUserStats"
+        android:layout_marginTop="-110dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/btnChangePass"
+        android:text="Update"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_button"
+        android:layout_toRightOf="@id/changeUsernameET"
+        android:layout_below="@id/ivUserStats"
+        android:layout_marginTop="-60dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_button"
+        android:text="Done"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivUserStats"
+        android:layout_marginTop="5dp"
+        android:visibility="invisible"/>
+
+
 
 
 </RelativeLayout>

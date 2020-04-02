@@ -32,7 +32,13 @@ public class PlanFragment extends Fragment {
     private Button btnAddTask;
 
     private ArrayList<String> taskList;
+    private ArrayList<String> taskListTemp;
     private HashMap<String, Integer> userHashMap;
+
+    private TodoListAdapter adapter;
+
+    private boolean firstTime;
+
 
 
     @Nullable
@@ -40,21 +46,27 @@ public class PlanFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_plan, container, false);
 
+        firstTime = true;
+
         lvList = (ListView) v.findViewById(R.id.lvList);
         addTaskET = (EditText) v.findViewById(R.id.addTaskET);
         btnAddTask = (Button) v.findViewById(R.id.btnAddTask);
 
         taskList = new ArrayList<String>();
+        taskListTemp = new ArrayList<String>();
+
+
+
+        adapter = new TodoListAdapter(getActivity(), taskList);
+        lvList.setAdapter(adapter);
+
 
         updateTaskList();
-
-        final TodoListAdapter adapter = new TodoListAdapter(getActivity(), taskList);
-        lvList.setAdapter(adapter);
-        taskList.clear();
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                firstTime = false;
                 String task = addTaskET.getText().toString();
                 if (task.isEmpty()) {
                     showMessage("Enter a task");
@@ -81,8 +93,19 @@ public class PlanFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userHashMap = (HashMap<String, Integer>) dataSnapshot.getValue();
 
-                for (String key : userHashMap.keySet()) {
-                    taskList.add(key);
+                if ((!(userHashMap == null)) && firstTime) {
+
+                    taskList.clear();
+                    taskListTemp.clear();
+
+                    for (String key : userHashMap.keySet()) {
+                        taskListTemp.add(key);
+                    }
+
+                    for (String val : taskListTemp) {
+                        taskList.add(val);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -91,6 +114,7 @@ public class PlanFragment extends Fragment {
 
             }
         });
+
     }
 
     private void updateDB(String task) {
