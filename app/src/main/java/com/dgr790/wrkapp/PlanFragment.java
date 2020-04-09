@@ -74,6 +74,8 @@ public class PlanFragment extends Fragment {
                     taskList.add(task);
                     adapter.notifyDataSetChanged();
                     updateDB(task);
+                    addTaskET.setText("");
+                    showMessage("Task added");
                 }
             }
         });
@@ -83,6 +85,7 @@ public class PlanFragment extends Fragment {
         return v;
     }
 
+    // Gets tasklist from database
     private void updateTaskList() {
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Tasks");
@@ -117,6 +120,8 @@ public class PlanFragment extends Fragment {
 
     }
 
+
+    // Puts new tasks into database using Hash Maps
     private void updateDB(String task) {
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

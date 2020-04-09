@@ -22,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Bundle containing user info
         Bundle extras = getIntent().getExtras();
         String[] userInformation = extras.getStringArray("userInformation");
 
@@ -36,6 +37,11 @@ public class HomeActivity extends AppCompatActivity {
                 new HomeFragment()).commit();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
+    // Updates database
     private void updateDB(String[] info) {
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users").child(id);
@@ -51,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
         currentDB.updateChildren(newInfo);
     }
 
+
+    // Used to select fragment
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -61,9 +69,9 @@ public class HomeActivity extends AppCompatActivity {
                         case R.id.nav_home:
                             selectedFrag = new HomeFragment();
                             break;
-                        case R.id.nav_game:
-                            selectedFrag = new GameFragment();
-                            break;
+//                        case R.id.nav_game:
+//                            selectedFrag = new GameFragment();
+//                            break;
                         case R.id.nav_leaderboard:
                             selectedFrag = new LeaderboardFragment();
                             break;

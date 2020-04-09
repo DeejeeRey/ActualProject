@@ -1,10 +1,13 @@
 package com.dgr790.wrkapp;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +29,8 @@ public class LeaderboardFragment extends Fragment {
 
     private ListView lvList;
 
+    private TextView tvFirst, tvSecond, tvThird;
+
     private ArrayList<String> fullnames = new ArrayList<String>();
     private ArrayList<String> firstnames = new ArrayList<String>();
     private ArrayList<String> secondnames = new ArrayList<String>();
@@ -44,6 +49,10 @@ public class LeaderboardFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
         lvList = (ListView) v.findViewById(R.id.lvList);
+        tvFirst = (TextView) v.findViewById(R.id.tvFirst);
+        tvSecond = (TextView) v.findViewById(R.id.tvSecond);
+        tvThird = (TextView) v.findViewById(R.id.tvThird);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -55,6 +64,7 @@ public class LeaderboardFragment extends Fragment {
         return v;
     }
 
+    // Sets item view by getting data from database
     private void setupListView() {
         DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -117,12 +127,21 @@ public class LeaderboardFragment extends Fragment {
         int c = 0;
 
         for (String name : firstnames) {
+            if (c == 0) {
+                tvFirst.setText(name.charAt(0) + "" + secondnames.get(c).charAt(0));
+            } else if (c == 1) {
+                tvSecond.setText(name.charAt(0) + "" + secondnames.get(c).charAt(0));
+            } else if (c == 2) {
+                tvThird.setText(name.charAt(0) + "" + secondnames.get(c).charAt(0));
+            }
             fullnames.add(name + " " + secondnames.get(c));
             c++;
         }
 
-        LeaderboardListAdapter adapter = new LeaderboardListAdapter(getActivity(), fullnames, points, positions);
-        lvList.setAdapter(adapter);
+        if (fullnames != null) {
+            LeaderboardListAdapter adapter = new LeaderboardListAdapter(getActivity(), fullnames, points, positions);
+            lvList.setAdapter(adapter);
+        }
 
 
     }

@@ -38,9 +38,7 @@ public class LoginActivity extends AppCompatActivity{
 
     private EditText emailET, passEt;
     private Button loginBtn, registerBtn;
-
     private String[] userInformation;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -87,6 +85,7 @@ public class LoginActivity extends AppCompatActivity{
         finish();
     }
 
+    // Sign in with firebase authentication
     private void signIn(String email, String pass) {
 
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -104,6 +103,7 @@ public class LoginActivity extends AppCompatActivity{
 
     }
 
+    // Dummy info for main activity
     private void addDummyInfo() {
         userInformation[0] = "";
         userInformation[1] = "";
@@ -112,6 +112,10 @@ public class LoginActivity extends AppCompatActivity{
         userInformation[4] = "";
         userInformation[5] = "";
         userInformation[6] = "false";
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     private void updateUI() {
@@ -126,6 +130,7 @@ public class LoginActivity extends AppCompatActivity{
         Toast.makeText(LoginActivity.this, m, Toast.LENGTH_SHORT).show();
     }
 
+    // Used if user is already logged in
     @Override
     protected void onStart() {
         super.onStart();

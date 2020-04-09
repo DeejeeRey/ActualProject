@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,6 +121,7 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
+    // Used to display all user info gathered from online database
     private void setProfileInfo(String[] dataNames) {
         DatabaseReference currentDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -137,7 +139,11 @@ public class ProfileFragment extends Fragment {
                 tvEmail.setText(userHashMap.get("Email"));
                 tvPoints.setText(String.valueOf(userHashMap.get("Score")));
                 tvTotal.setText(points/60 + " hrs " + points%60 + " mins");
-                tvAverage.setText(points/times + " mins");
+                if (times != 0) {
+                    tvAverage.setText(points / times + " mins");
+                } else {
+                    tvAverage.setText(0 + " mins");
+                }
             }
 
             @Override
@@ -148,6 +154,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    // Change password method
     private void changePassword() {
         String newPass = changePassET.getText().toString();
         if (newPass.isEmpty()) {
@@ -167,6 +174,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    // Change username method
     private void changeUsername() {
         final String newUsername = changeUsernameET.getText().toString();
         currentDB = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -191,6 +199,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    // Change email method
     private void changeEmail() {
         String newEmail = changeEmailET.getText().toString();
         if (newEmail.isEmpty()) {
@@ -211,7 +220,7 @@ public class ProfileFragment extends Fragment {
     }
 
 
-
+    // Change layout when edit button is pressed
     private void changeLayout() {
         tvPoints.setVisibility(getView().INVISIBLE);
         tvTotal.setVisibility(getView().INVISIBLE);
@@ -247,6 +256,7 @@ public class ProfileFragment extends Fragment {
         btnChangePass.setVisibility(getView().INVISIBLE);
     }
 
+    // Sets all views - didn't want cluttered onCreate
     private void setViews(View v) {
         ivProfileImage = (CircleImageView) v.findViewById(R.id.ivProfileImage);
         btnEdit = (Button) v.findViewById(R.id.btnEdit);
@@ -271,10 +281,12 @@ public class ProfileFragment extends Fragment {
         btnDone = (Button) v.findViewById(R.id.btnDone);
     }
 
+    // Sets profile image
     private void setProfileImage() {
         Glide.with(this).load(currentUser.getPhotoUrl()).into(ivProfileImage);
     }
 
+    // Signs user out of firebase account
     private void signOut(View v) {
         FirebaseAuth.getInstance().signOut();
         Intent loginActivity = new Intent(v.getContext(), LoginActivity.class);
@@ -283,6 +295,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void showMessage(String m) {
-        Toast.makeText(this.getContext(), m, Toast.LENGTH_SHORT).show();
+        if (this.getContext() != null) {
+            Toast.makeText(this.getContext(), m, Toast.LENGTH_SHORT).show();
+        }
     }
 }

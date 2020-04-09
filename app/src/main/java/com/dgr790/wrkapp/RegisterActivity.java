@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     static int REQUESTCODE = 1;
 
     private EditText firstnameET, secondnameET, usernameET, emailET, passET, passConfET;
-    private Button registerBtn;
+    private Button registerBtn, btnBack;
 
     private String username, firstname, secondname, score, times, email, pass , passConf;
 
@@ -60,13 +60,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        firstnameET = findViewById(R.id.firstnameET);
-        secondnameET = findViewById(R.id.secondnameET);
-        usernameET = findViewById(R.id.usernameET);
-        emailET = findViewById(R.id.emailET);
-        passET = findViewById(R.id.passET);
-        passConfET = findViewById(R.id.passConfET);
-        registerBtn = findViewById(R.id.registerBtn);
+        firstnameET = (EditText) findViewById(R.id.firstnameET);
+        secondnameET = (EditText) findViewById(R.id.secondnameET);
+        usernameET = (EditText) findViewById(R.id.usernameET);
+        emailET = (EditText) findViewById(R.id.emailET);
+        passET = (EditText) findViewById(R.id.passET);
+        passConfET = (EditText) findViewById(R.id.passConfET);
+        registerBtn = (Button) findViewById(R.id.registerBtn);
+        btnBack = (Button) findViewById(R.id.btnBack);
 
         userInformation = new String[7];
 
@@ -96,6 +97,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToLogin();
+            }
+        });
+
         userPhotoIV = findViewById(R.id.userPhotoIV);
 
         userPhotoIV.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +119,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    private void goToLogin() {
+        Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(loginActivity);
+        finish();
+    }
+
+    // Info passed to main activity
     private void addUserInformation() {
         score = Integer.toString(0);
         times = Integer.toString(0);
@@ -122,12 +137,9 @@ public class RegisterActivity extends AppCompatActivity {
         userInformation[4] = score;
         userInformation[5] = times;
         userInformation[6] = "true";
-
-
-
-
     }
 
+    // Creates user account using firebase
     private void createUserAccount(String email, String pass) {
 
         mAuth.createUserWithEmailAndPassword(email, pass)
@@ -149,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Update user photo and name
     private void updateUserInfo() {
-
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
 
         mStorage.child(pickedImgUri.getLastPathSegment()).putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -183,6 +194,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 
     private void updateUI() {
 
@@ -192,6 +207,7 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
 
     }
+
 
     private void openGallery() {
 
@@ -205,6 +221,7 @@ public class RegisterActivity extends AppCompatActivity {
         Toast.makeText(RegisterActivity.this, m, Toast.LENGTH_SHORT).show();
     }
 
+    // Checks gallery permission
     private void checkAndRequestPermission() {
 
         if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -219,6 +236,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+
+    // Gets user photo from device
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

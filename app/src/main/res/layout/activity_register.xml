@@ -104,4 +104,15 @@
         app:layout_constraintVertical_bias="0.0"
         android:layout_centerHorizontal="true"/>
 
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_button"
+        android:text="Back"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"/>
+
 </RelativeLayout>

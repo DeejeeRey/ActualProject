@@ -30,8 +30,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
@@ -40,13 +47,15 @@ public class HomeFragment extends Fragment {
     private EditText etTime;
     private TextView tvTimer, tvMessage;
     private CountDownTimer timer;
-    private ImageView ivBackground;
+    private ImageView ivBackground, ivLogo;
     private int mins;
     private int score;
 
     private String userID;
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+
+    private String[] fullText;
 
     private int dbScore;
     private int dbTimes = 0;
@@ -71,6 +80,7 @@ public class HomeFragment extends Fragment {
         btnHideInfo = (Button) v.findViewById(R.id.btnHideInfo);
         tvMessage = (TextView) v.findViewById(R.id.tvMessage);
         ivBackground = (ImageView) v.findViewById(R.id.ivBackground);
+        ivLogo = (ImageView) v.findViewById(R.id.ivLogo);
 
         rotatePB();
 
@@ -85,6 +95,19 @@ public class HomeFragment extends Fragment {
 
         timerOn = false;
 
+        try {
+            getTips();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        ivLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTips();
+            }
+        });
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +115,10 @@ public class HomeFragment extends Fragment {
                 String timeString = etTime.getText().toString();
                 if (timeString.isEmpty()) {
                     showMessage("Enter a time to set");
-                } else {
+                } else if (Integer.parseInt(timeString) > 180) {
+                    showMessage("Enter a time less than 3 hours");
+                }
+                else {
                     mins = Integer.parseInt(timeString);
                     startTimer();
 
@@ -112,10 +138,38 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
+
+    private void setTips() {
+        Random rand = new Random();
+        int randomNo = rand.nextInt(12);
+
+        btnShowInfo.setVisibility(getView().INVISIBLE);
+        btnHideInfo.setVisibility(getView().VISIBLE);
+        ivBackground.setVisibility(getView().VISIBLE);
+        ivLogo.setVisibility(getView().INVISIBLE);
+        tvMessage.setVisibility(getView().VISIBLE);
+
+        tvMessage.setTextSize(24);
+        tvMessage.setText(fullText[randomNo]);
+
+        btnHideInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvMessage.setTextSize(17);
+                btnShowInfo.setVisibility(getView().VISIBLE);
+                btnHideInfo.setVisibility(getView().INVISIBLE);
+                ivBackground.setVisibility(getView().INVISIBLE);
+                ivLogo.setVisibility(getView().VISIBLE);
+                tvMessage.setVisibility(getView().INVISIBLE);
+            }
+        });
+    }
+
     private void showInfo() {
         btnShowInfo.setVisibility(getView().INVISIBLE);
         btnHideInfo.setVisibility(getView().VISIBLE);
         ivBackground.setVisibility(getView().VISIBLE);
+        ivLogo.setVisibility(getView().INVISIBLE);
         tvMessage.setVisibility(getView().VISIBLE);
 
         tvMessage.setText("Welcome to WRK - the app to help you study!\n\n" +
@@ -130,9 +184,35 @@ public class HomeFragment extends Fragment {
                 btnShowInfo.setVisibility(getView().VISIBLE);
                 btnHideInfo.setVisibility(getView().INVISIBLE);
                 ivBackground.setVisibility(getView().INVISIBLE);
+                ivLogo.setVisibility(getView().VISIBLE);
                 tvMessage.setVisibility(getView().INVISIBLE);
             }
         });
+
+
+    }
+
+    private void getTips() throws IOException{
+        String str = "";
+        StringBuilder strBuilder = new StringBuilder();
+        InputStream is = this.getResources().openRawResource(R.raw.tips);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        while (true) {
+           try {
+               if ((str = reader.readLine()) == null) break;
+           }
+           catch (IOException e) {
+               e.printStackTrace();
+           }
+           strBuilder.append(str).append("\n");
+        }
+        is.close();
+
+        fullText =  strBuilder.toString().split("\\r?\\n");
+
+
+
 
 
     }
@@ -148,8 +228,9 @@ public class HomeFragment extends Fragment {
 
         timerOn = true;
 
-        btnStart.setVisibility(getView().GONE);
+        btnStart.setVisibility(getView().INVISIBLE);
         btnStop.setVisibility(getView().VISIBLE);
+        etTime.setVisibility(getView().INVISIBLE);
 
         timer = new CountDownTimer(60*mins*1000, 500) {
 
@@ -186,8 +267,9 @@ public class HomeFragment extends Fragment {
                 timer.cancel();
                 pb.setProgress(60*mins);
                 tvTimer.setText("00:00");
-                btnStop.setVisibility(getView().GONE);
+                btnStop.setVisibility(getView().INVISIBLE);
                 btnStart.setVisibility(getView().VISIBLE);
+                etTime.setVisibility(getView().VISIBLE);
             }
         });
 

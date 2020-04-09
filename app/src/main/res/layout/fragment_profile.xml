@@ -227,7 +227,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="80dp"
         android:hint="Change password"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:inputType="textPassword"/>
 
     <Button
         android:id="@+id/btnChangeUsername"

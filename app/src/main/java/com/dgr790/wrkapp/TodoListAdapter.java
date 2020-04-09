@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -33,6 +34,8 @@ public class TodoListAdapter extends ArrayAdapter<String> {
         this.tasks = tasks;
     }
 
+
+    // Sets the view of each individual item
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
@@ -48,12 +51,15 @@ public class TodoListAdapter extends ArrayAdapter<String> {
                 tasks.remove(position);
                 notifyDataSetChanged();
                 updateDB(position);
+                showMessage("Task deleted");
             }
         });
 
         return rowView;
     }
 
+
+    //Updates the database with the to-do list items
     private void updateDB(final int position) {
         thisTime = true;
 
@@ -64,7 +70,10 @@ public class TodoListAdapter extends ArrayAdapter<String> {
         currentDB.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.println("yes");
+
+                ArrayList<String> keysRemoved = new ArrayList<String>();
+                keysRemoved.clear();
+
                 HashMap<String, Integer> userHashMap = (HashMap<String, Integer>) dataSnapshot.getValue();
 
 
@@ -73,9 +82,12 @@ public class TodoListAdapter extends ArrayAdapter<String> {
                     int i = 0;
                     for (String key : userHashMap.keySet()) {
                         if (i == position) {
-                            userHashMap.remove(key);
+                            keysRemoved.add(key);
                         }
                         i++;
+                    }
+                    for (String key : keysRemoved) {
+                        userHashMap.remove(key);
                     }
 
                     currentDB.child(id).setValue(userHashMap);
@@ -89,4 +101,9 @@ public class TodoListAdapter extends ArrayAdapter<String> {
             }
         });
     }
+
+    private void showMessage(String m) {
+        Toast.makeText(this.getContext(), m, Toast.LENGTH_SHORT).show();
+    }
+
 }

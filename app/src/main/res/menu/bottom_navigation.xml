@@ -6,10 +6,10 @@
         android:icon="@drawable/ic_brush_black_24dp"
         android:title=""/>
 
-    <item
-        android:id="@+id/nav_game"
-        android:icon="@drawable/ic_videogame_asset_black_24dp"
-        android:title=""/>
+<!--    <item-->
+<!--        android:id="@+id/nav_game"-->
+<!--        android:icon="@drawable/ic_videogame_asset_black_24dp"-->
+<!--        android:title=""/>-->
 
     <item
         android:id="@+id/nav_home"
